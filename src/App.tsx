@@ -27,7 +27,8 @@ import {
   Gamepad2,
   Trophy,
   Baby,
-  Dog
+  Dog,
+  Facebook
 } from 'lucide-react';
 
 // Images based on the user's provided photos
@@ -462,6 +463,23 @@ export default function App() {
                     <p>szumfalgaski@gmail.com</p>
                   </div>
                 </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
+                    <Facebook className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-stone-500 text-xs uppercase font-bold">Facebook</p>
+                    <a 
+                      href="https://www.facebook.com/profile.php?id=61583768026089" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="hover:underline"
+                    >
+                      facebook.com/szumfal
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="bg-white rounded-2xl p-8 text-stone-900">
@@ -571,7 +589,16 @@ export default function App() {
             </div>
           </div>
           <p>© 2026 Szum Fal - Apartament Premium. Wszystkie prawa zastrzeżone.</p>
-          <div className="flex gap-6">
+          <div className="flex gap-6 items-center">
+            <a 
+              href="https://www.facebook.com/profile.php?id=61583768026089" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
+              title="Facebook"
+            >
+              <Facebook className="w-5 h-5" />
+            </a>
             <a href="mailto:szumfalgaski@gmail.com" className="hover:text-white transition-colors">szumfalgaski@gmail.com</a>
             <a href="#" className="hover:text-white transition-colors">Polityka prywatności</a>
           </div>
