@@ -1,13 +1,692 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<!DOCTYPE html>
+<html lang="pl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Szum Fal Apartament Gąski</title>
+    <!-- Tailwind CSS v3 CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        stone: {
+                            50: '#f5f5f4',
+                            100: '#f5f5f0',
+                            200: '#e7e7e4',
+                            300: '#d6d3d1',
+                            400: '#a8a29e',
+                            500: '#78716c',
+                            600: '#57534e',
+                            700: '#44403c',
+                            800: '#292524',
+                            900: '#1c1917',
+                            950: '#0c0a09',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        
+        /* Custom animations to mimic Framer Motion */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .fade-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
 
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .scale-in.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Slider transitions */
+        .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            z-index: 0;
+        }
+        .slide.active {
+            opacity: 1;
+            z-index: 10;
+        }
+
+        /* Form status styles */
+        .form-status-success { display: none; }
+        .form-status-sending { display: none; }
+        .form-status-error { display: none; }
+        
+        .status-active .form-status-success { display: block; }
+        .status-sending .form-status-sending { display: flex; }
+        .status-error .form-status-error { display: block; }
+        .status-active .form-content { display: none; }
+    </style>
+</head>
+<body class="min-h-screen bg-stone-50 text-stone-900">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="sticky top-0 w-full z-50 bg-white shadow-sm py-4 transition-all duration-300">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="relative w-24 h-24 border-2 border-stone-900 flex items-center justify-center overflow-hidden bg-white">
+                    <img src="src/logo_transp.png" alt="Szum Fal Logo" class="w-full h-full object-contain p-1" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-stone-900 font-bold\'>SF</div>'">
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-serif text-xl leading-none tracking-tight text-stone-900">Szum Fal</span>
+                    <span class="text-[8px] uppercase tracking-[0.2em] mt-1 text-stone-500">Apartament Premium • Gąski</span>
+                </div>
+            </div>
+            <div class="hidden md:flex gap-8 text-sm font-medium uppercase tracking-widest text-stone-600">
+                <a href="#o-nas" class="hover:text-stone-900 transition-colors">O nas</a>
+                <a href="#udogodnienia" class="hover:text-stone-900 transition-colors">Udogodnienia</a>
+                <a href="#galeria" class="hover:text-stone-900 transition-colors">Galeria</a>
+                <a href="#mapa" class="hover:text-stone-900 transition-colors">Mapa</a>
+                <a href="#kontakt" class="hover:text-stone-900 transition-colors">Kontakt</a>
+            </div>
+            <a href="#kontakt" class="bg-stone-900 text-white px-10 py-4 rounded-full text-lg font-bold hover:bg-stone-800 transition-all hover:scale-105 active:scale-95 shadow-lg">
+                Zarezerwuj
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Slider -->
+    <section class="relative h-[calc(100vh-88px)] overflow-hidden">
+        <div id="hero-slider">
+            <!-- Slide 1 -->
+            <div class="slide active">
+                <div class="absolute inset-0 bg-black/40 z-10"></div>
+                <img src="src/20.jpg" alt="Szum Fal" class="w-full h-full object-cover">
+                <div class="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-6">
+                    <h1 class="text-white font-serif text-5xl md:text-7xl mb-4 translate-y-5 opacity-0 transition-all duration-700 delay-500 hero-text">Szum Fal</h1>
+                    <p class="text-white/90 text-lg md:text-xl max-w-2xl font-light mb-8 translate-y-5 opacity-0 transition-all duration-700 delay-700 hero-text">Luksusowy wypoczynek w kompleksie Let's Sea w Gąskach, zaledwie 50m od plaży.</p>
+                    <div class="translate-y-5 opacity-0 transition-all duration-700 delay-1000 hero-text">
+                        <a href="#kontakt" class="bg-white text-stone-900 px-12 py-5 rounded-full text-xl font-bold hover:bg-stone-100 transition-all hover:scale-105 active:scale-95 shadow-2xl inline-block">Zarezerwuj teraz</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="slide">
+                <div class="absolute inset-0 bg-black/40 z-10"></div>
+                <img src="src/11.jpg" alt="Komfortowa Sypialnia" class="w-full h-full object-cover">
+                <div class="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-6">
+                    <h1 class="text-white font-serif text-5xl md:text-7xl mb-4 translate-y-5 opacity-0 transition-all duration-700 delay-500 hero-text">Komfortowa Sypialnia</h1>
+                    <p class="text-white/90 text-lg md:text-xl max-w-2xl font-light mb-8 translate-y-5 opacity-0 transition-all duration-700 delay-700 hero-text">Zasypiaj przy kojącym szumie fal w elegancko urządzonym wnętrzu.</p>
+                    <div class="translate-y-5 opacity-0 transition-all duration-700 delay-1000 hero-text">
+                        <a href="#kontakt" class="bg-white text-stone-900 px-12 py-5 rounded-full text-xl font-bold hover:bg-stone-100 transition-all hover:scale-105 active:scale-95 shadow-2xl inline-block">Zarezerwuj teraz</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="slide">
+                <div class="absolute inset-0 bg-black/40 z-10"></div>
+                <img src="src/34.jpg" alt="Strefa SPA & Wellness" class="w-full h-full object-cover">
+                <div class="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-6">
+                    <h1 class="text-white font-serif text-5xl md:text-7xl mb-4 translate-y-5 opacity-0 transition-all duration-700 delay-500 hero-text">Strefa SPA & Wellness</h1>
+                    <p class="text-white/90 text-lg md:text-xl max-w-2xl font-light mb-8 translate-y-5 opacity-0 transition-all duration-700 delay-700 hero-text">Bezpłatny dostęp do basenu, sauny i jacuzzi dla naszych gości.</p>
+                    <div class="translate-y-5 opacity-0 transition-all duration-700 delay-1000 hero-text">
+                        <a href="#kontakt" class="bg-white text-stone-900 px-12 py-5 rounded-full text-xl font-bold hover:bg-stone-100 transition-all hover:scale-105 active:scale-95 shadow-2xl inline-block">Zarezerwuj teraz</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Slide 4 -->
+            <div class="slide">
+                <div class="absolute inset-0 bg-black/40 z-10"></div>
+                <img src="src/23.jpg" alt="Widok na Morze" class="w-full h-full object-cover">
+                <div class="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-6">
+                    <h1 class="text-white font-serif text-5xl md:text-7xl mb-4 translate-y-5 opacity-0 transition-all duration-700 delay-500 hero-text">Widok na Morze</h1>
+                    <p class="text-white/90 text-lg md:text-xl max-w-2xl font-light mb-8 translate-y-5 opacity-0 transition-all duration-700 delay-700 hero-text">Prywatny taras z widokiem na Bałtyk – idealne miejsce na poranną kawę.</p>
+                    <div class="translate-y-5 opacity-0 transition-all duration-700 delay-1000 hero-text">
+                        <a href="#kontakt" class="bg-white text-stone-900 px-12 py-5 rounded-full text-xl font-bold hover:bg-stone-100 transition-all hover:scale-105 active:scale-95 shadow-2xl inline-block">Zarezerwuj teraz</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button id="prevSlide" class="absolute left-6 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm transition-all">
+            <i data-lucide="chevron-left" class="w-8 h-8"></i>
+        </button>
+        <button id="nextSlide" class="absolute right-6 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm transition-all">
+            <i data-lucide="chevron-right" class="w-8 h-8"></i>
+        </button>
+
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex gap-3" id="slider-dots">
+            <button class="dot w-8 h-2 rounded-full bg-white transition-all" data-index="0"></button>
+            <button class="dot w-2 h-2 rounded-full bg-white/40 transition-all" data-index="1"></button>
+            <button class="dot w-2 h-2 rounded-full bg-white/40 transition-all" data-index="2"></button>
+            <button class="dot w-2 h-2 rounded-full bg-white/40 transition-all" data-index="3"></button>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="o-nas" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="fade-in-left">
+                    <span class="text-stone-400 font-medium tracking-[0.2em] uppercase text-sm mb-4 block">Szum Fal</span>
+                    <h2 class="text-4xl md:text-5xl font-serif mb-8 leading-tight">Rodzinne wakacje przy samej plaży</h2>
+                    <p class="text-stone-600 leading-relaxed mb-6">
+                        Zapraszamy do apartamentu Szum Fal, położonego w nowoczesnym kompleksie Let’s Sea w Gąskach – miejscu stworzonym z myślą o tych, którzy pragną wypoczynku blisko natury, ale z pełnym komfortem i dostępem do udogodnień na najwyższym poziomie.
+                    </p>
+                    <p class="text-stone-600 leading-relaxed mb-8">
+                        Apartament pomieści do 5 osób, oferując przestrzeń idealną zarówno dla rodzin z dziećmi, jak i par czy grup przyjaciół. Znajduje się zaledwie kilkadziesiąt metrów od kameralnej plaży, dzięki czemu każdego ranka możesz budzić się przy szumie fal.
+                    </p>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center text-stone-900">
+                                <i data-lucide="maximize" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-stone-400 uppercase font-bold">Pojemność</p>
+                                <p class="font-medium">Do 5 osób</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center text-stone-900">
+                                <i data-lucide="bed" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-stone-400 uppercase font-bold">Sypialnie</p>
+                                <p class="font-medium">1 + Salon</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative scale-in">
+                    <img src="src/1.jpg" alt="Wnętrze apartamentu" class="rounded-2xl shadow-2xl w-full h-[500px] object-cover">
+                    <div class="absolute -bottom-8 -left-8 bg-stone-900 text-white p-8 rounded-2xl hidden lg:block">
+                        <p class="text-3xl font-serif mb-1">50m</p>
+                        <p class="text-stone-400 text-sm uppercase tracking-wider">Do plaży</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Amenities Grid -->
+    <section id="udogodnienia" class="py-24 bg-stone-100">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="text-4xl font-serif mb-4">Luksusowa Strefa Relaksu</h2>
+                <p class="text-stone-500 max-w-xl mx-auto">Goście apartamentu Szum Fal mają bezpłatny dostęp do pełnej infrastruktury kompleksu Let's Sea.</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group fade-in-up" style="transition-delay: 0.1s;">
+                    <div class="text-stone-400 group-hover:text-stone-900 transition-colors mb-4"><i data-lucide="waves" class="w-6 h-6"></i></div>
+                    <span class="font-medium text-stone-700">Basen & Jacuzzi</span>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group fade-in-up" style="transition-delay: 0.2s;">
+                    <div class="text-stone-400 group-hover:text-stone-900 transition-colors mb-4"><i data-lucide="thermometer" class="w-6 h-6"></i></div>
+                    <span class="font-medium text-stone-700">Sauna</span>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group fade-in-up" style="transition-delay: 0.3s;">
+                    <div class="text-stone-400 group-hover:text-stone-900 transition-colors mb-4"><i data-lucide="dumbbell" class="w-6 h-6"></i></div>
+                    <span class="font-medium text-stone-700">Siłownia</span>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group fade-in-up" style="transition-delay: 0.4s;">
+                    <div class="text-stone-400 group-hover:text-stone-900 transition-colors mb-4"><i data-lucide="trophy" class="w-6 h-6"></i></div>
+                    <span class="font-medium text-stone-700">Kort Tenisowy</span>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group fade-in-up" style="transition-delay: 0.5s;">
+                    <div class="text-stone-400 group-hover:text-stone-900 transition-colors mb-4"><i data-lucide="gamepad-2" class="w-6 h-6"></i></div>
+                    <span class="font-medium text-stone-700">Pokój Gier</span>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group fade-in-up" style="transition-delay: 0.6s;">
+                    <div class="text-stone-400 group-hover:text-stone-900 transition-colors mb-4"><i data-lucide="baby" class="w-6 h-6"></i></div>
+                    <span class="font-medium text-stone-700">Plac Zabaw</span>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group fade-in-up" style="transition-delay: 0.7s;">
+                    <div class="text-stone-400 group-hover:text-stone-900 transition-colors mb-4"><i data-lucide="car" class="w-6 h-6"></i></div>
+                    <span class="font-medium text-stone-700">Garaż Podziemny</span>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group fade-in-up" style="transition-delay: 0.8s;">
+                    <div class="text-stone-400 group-hover:text-stone-900 transition-colors mb-4"><i data-lucide="dog" class="w-6 h-6"></i></div>
+                    <span class="font-medium text-stone-700">Zwierzęta Mile Widziane</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="galeria" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                <div>
+                    <h2 class="text-4xl font-serif mb-2">Galeria</h2>
+                    <p class="text-stone-500">Autentyczne zdjęcia apartamentu i jego otoczenia.</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="gallery-grid">
+                <!-- Gallery images will be injected here or hardcoded -->
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/1.jpg" alt="Salon - widok główny" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/2.jpg" alt="Salon i strefa wypoczynkowa" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/3.jpg" alt="Jadalnia" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/4.jpg" alt="Salon z aneksem" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/5.jpg" alt="Sypialnia - detale" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/6.jpg" alt="Aneks kuchenny" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/7.jpg" alt="Łazienka" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/8.jpg" alt="Sypialnia - łóżko małżeńskie" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/9.jpg" alt="Budynek kompleksu" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/23.jpg" alt="Wejście do kompleksu" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/11.jpg" alt="Architektura obiektu" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/12.jpg" alt="Strefa Jacuzzi" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/13.jpg" alt="Basen kryty" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/14.jpg" alt="Sauna" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/15.jpg" alt="Siłownia / Fitness" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/16.jpg" alt="Hala sportowa" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/17.jpg" alt="Plaża" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/24.jpg" alt="Zejście na plażę" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/25.jpg" alt="Widok okolicy" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+                <div class="aspect-square overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all scale-in"><img src="src/20.jpg" alt="Okolica i zieleń" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section id="mapa" class="py-24 bg-stone-100">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="text-4xl font-serif mb-4">Lokalizacja</h2>
+                <p class="text-stone-500">Znajdziesz nas w samym sercu Gąsek, w kompleksie Let's Sea Baltic Park.</p>
+            </div>
+            <div class="rounded-3xl overflow-hidden shadow-2xl h-[500px] relative scale-in">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2331.4064639908606!2d15.886368299999999!3d54.243692599999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47003b97818d5f5f%3A0xb464c986d9d3c74!2sSzum%20Fal%20Apartament%20G%C4%85ski!5e0!3m2!1spl!2spl!4v1773401334605!5m2!1spl!2spl" 
+                    width="100%" 
+                    height="100%" 
+                    style="border: 0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="Mapa Szum Fal Gąski"
+                ></iframe>
+                <div class="absolute bottom-6 left-6 bg-white p-6 rounded-2xl shadow-xl max-w-xs hidden md:block">
+                    <h3 class="font-serif text-lg mb-2">Szum Fal</h3>
+                    <p class="text-sm text-stone-500 mb-4">ul. Nadbrzeżna 52E, Gąski</p>
+                    <a href="https://maps.app.goo.gl/JGEJq1Vx8TeaVEan9" target="_blank" rel="noopener noreferrer" class="text-stone-900 font-bold text-sm flex items-center gap-2 hover:underline">
+                        Otwórz w Google Maps <i data-lucide="maximize" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="kontakt" class="py-24 bg-stone-900 text-white">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16">
+                <div class="fade-in-left">
+                    <h2 class="text-4xl font-serif mb-8">Zarezerwuj swój pobyt</h2>
+                    <p class="text-stone-400 mb-6 leading-relaxed">
+                        Rezerwacji dokonujemy bezpośrednio poprzez kontakt mailowy lub telefoniczny. Skontaktuj się z nami, aby sprawdzić dostępność terminów.
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center"><i data-lucide="map-pin" class="w-5 h-5"></i></div>
+                            <div>
+                                <p class="text-stone-500 text-xs uppercase font-bold">Lokalizacja</p>
+                                <p>ul. Nadbrzeżna 52E, Gąski</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center"><i data-lucide="phone" class="w-5 h-5"></i></div>
+                            <div>
+                                <p class="text-stone-500 text-xs uppercase font-bold">Telefon</p>
+                                <p>573 032 343</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center"><i data-lucide="mail" class="w-5 h-5"></i></div>
+                            <div>
+                                <p class="text-stone-500 text-xs uppercase font-bold">Email</p>
+                                <p>szumfalgaski@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center"><i data-lucide="facebook" class="w-5 h-5"></i></div>
+                            <div>
+                                <p class="text-stone-500 text-xs uppercase font-bold">Facebook</p>
+                                <a href="https://www.facebook.com/profile.php?id=61583768026089" target="_blank" rel="noopener noreferrer" class="hover:underline">facebook.com/szumfal</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="contact-form-container" class="bg-white rounded-2xl p-8 text-stone-900 fade-in-up">
+                    <div class="form-content">
+                        <h3 class="text-xl font-serif mb-6">Wyślij zapytanie</h3>
+                        <form id="booking-form" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold uppercase text-stone-400">Imię</label>
+                                    <input type="text" id="name" name="name" class="w-full px-4 py-3 rounded-lg bg-stone-50 border-none focus:ring-2 focus:ring-stone-900 transition-all" placeholder="Twoje imię">
+                                    <p class="error-msg text-red-500 text-[10px] font-bold uppercase hidden" id="error-name"></p>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold uppercase text-stone-400">Email</label>
+                                    <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-lg bg-stone-50 border-none focus:ring-2 focus:ring-stone-900 transition-all" placeholder="Twój adres email">
+                                    <p class="error-msg text-red-500 text-[10px] font-bold uppercase hidden" id="error-email"></p>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold uppercase text-stone-400">Wiadomość / Termin</label>
+                                <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 rounded-lg bg-stone-50 border-none focus:ring-2 focus:ring-stone-900 transition-all" placeholder="Podaj interesujący Cię termin pobytu..."></textarea>
+                                <p class="error-msg text-red-500 text-[10px] font-bold uppercase hidden" id="error-message"></p>
+                            </div>
+                            <button type="submit" class="w-full bg-stone-900 text-white py-6 rounded-lg font-bold text-xl hover:bg-stone-800 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-xl flex items-center justify-center gap-3">
+                                Wyślij zapytanie
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Form States -->
+                    <div class="form-status-sending items-center justify-center gap-3 py-12 flex-col">
+                        <div class="w-10 h-10 border-4 border-stone-200 border-t-stone-900 rounded-full animate-spin"></div>
+                        <p class="font-bold">Wysyłanie...</p>
+                    </div>
+
+                    <div class="form-status-success text-center py-12">
+                        <div class="w-24 h-24 border-2 border-stone-900 flex items-center justify-center mx-auto mb-6 overflow-hidden bg-white">
+                            <img src="src/logo_transp.png" alt="Szum Fal Logo" class="w-full h-full object-contain p-1">
+                        </div>
+                        <h4 class="text-2xl font-serif mb-2">Wiadomość wysłana!</h4>
+                        <p class="text-stone-500">Dziękujemy za kontakt. Ekipa SZUM FAL odezwie się do Ciebie najszybciej jak to możliwe.</p>
+                        <button id="reset-form" class="mt-8 text-stone-900 font-bold hover:underline">Wyślij kolejną wiadomość</button>
+                    </div>
+
+                    <div class="form-status-error text-center py-12">
+                        <p class="text-red-500 font-medium">Wystąpił błąd. Spróbuj ponownie później.</p>
+                        <button id="retry-form" class="mt-4 text-stone-900 font-bold hover:underline">Spróbuj ponownie</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-stone-950 text-stone-500 text-sm border-t border-white/5">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <div class="relative w-16 h-16 border border-white/20 flex items-center justify-center bg-white">
+                    <img src="src/logo_transp.png" alt="Szum Fal Logo" class="w-full h-full object-contain p-1" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-stone-900 font-bold text-xs\'>SF</div>'">
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-serif text-white leading-none tracking-tight">Szum Fal</span>
+                    <span class="text-[6px] uppercase tracking-[0.2em] mt-1 text-stone-500">Apartament Premium • Gąski</span>
+                </div>
+            </div>
+            <p>© 2026 Szum Fal - Apartament Premium. Wszystkie prawa zastrzeżone.</p>
+            <div class="flex gap-6 items-center">
+                <a href="https://www.facebook.com/profile.php?id=61583768026089" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" title="Facebook">
+                    <i data-lucide="facebook" class="w-5 h-5"></i>
+                </a>
+                <a href="mailto:szumfalgaski@gmail.com" class="hover:text-white transition-colors">szumfalgaski@gmail.com</a>
+                <button id="open-privacy" class="hover:text-white transition-colors">Polityka prywatności</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacy-modal" class="fixed inset-0 z-[100] hidden items-center justify-center px-6">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="close-privacy-overlay"></div>
+        <div class="bg-white w-full max-w-3xl max-h-[80vh] rounded-2xl shadow-2xl z-10 overflow-hidden flex flex-col relative">
+            <div class="p-6 border-b border-stone-100 flex justify-between items-center">
+                <h3 class="text-2xl font-serif">Polityka Prywatności</h3>
+                <button id="close-privacy-btn" class="p-2 hover:bg-stone-100 rounded-full transition-colors">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="p-8 overflow-y-auto text-stone-600 leading-relaxed space-y-6">
+                <section>
+                    <h4 class="font-bold text-stone-900 mb-2">1. Administrator Danych</h4>
+                    <p>Administratorem Twoich danych osobowych jest Szum Fal Apartament Gąski, ul. Nadbrzeżna 52E, Gąski. Kontakt: szumfalgaski@gmail.com.</p>
+                </section>
+                <section>
+                    <h4 class="font-bold text-stone-900 mb-2">2. Cel Przetwarzania Danych</h4>
+                    <p>Twoje dane przetwarzane są wyłącznie w celu:</p>
+                    <ul class="list-disc ml-6 space-y-1">
+                        <li>Obsługi zapytań przesłanych przez formularz kontaktowy.</li>
+                        <li>Realizacji procesu rezerwacji apartamentu.</li>
+                        <li>Kontaktu w sprawach związanych z Twoim pobytem.</li>
+                    </ul>
+                </section>
+                <section>
+                    <h4 class="font-bold text-stone-900 mb-2">3. Zakres Danych</h4>
+                    <p>Przetwarzamy dane podane przez Ciebie w formularzu: imię, adres e-mail oraz treść wiadomości (w tym preferowany termin pobytu).</p>
+                </section>
+                <section>
+                    <h4 class="font-bold text-stone-900 mb-2">4. Prawa Użytkownika</h4>
+                    <p>Masz prawo do wglądu w swoje dane, ich poprawiania, żądania usunięcia lub ograniczenia przetwarzania. W tym celu skontaktuj się z nami mailowo.</p>
+                </section>
+                <section>
+                    <h4 class="font-bold text-stone-900 mb-2">5. Pliki Cookies</h4>
+                    <p>Strona może wykorzystywać pliki cookies w celach statystycznych oraz dla poprawnego działania funkcji interaktywnych. Możesz zarządzać ustawieniami cookies w swojej przeglądarce.</p>
+                </section>
+                <section>
+                    <h4 class="font-bold text-stone-900 mb-2">6. Bezpieczeństwo</h4>
+                    <p>Dbamy o bezpieczeństwo Twoich danych, stosując odpowiednie środki techniczne i organizacyjne chroniące przed nieuprawnionym dostępem.</p>
+                </section>
+            </div>
+            <div class="p-6 border-t border-stone-100 text-right">
+                <button id="close-privacy-footer" class="bg-stone-900 text-white px-8 py-3 rounded-full font-bold hover:bg-stone-800 transition-colors">Zamknij</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-md');
+                navbar.classList.remove('shadow-sm');
+            } else {
+                navbar.classList.add('shadow-sm');
+                navbar.classList.remove('shadow-md');
+            }
+        });
+
+        // Hero Slider Logic
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => {
+                d.classList.remove('w-8', 'bg-white');
+                d.classList.add('w-2', 'bg-white/40');
+            });
+
+            slides[index].classList.add('active');
+            dots[index].classList.add('w-8', 'bg-white');
+            dots[index].classList.remove('w-2', 'bg-white/40');
+            
+            // Trigger hero text animation
+            const texts = slides[index].querySelectorAll('.hero-text');
+            texts.forEach(t => {
+                t.classList.remove('translate-y-5', 'opacity-0');
+            });
+        }
+
+        // Initial trigger for first slide
+        setTimeout(() => showSlide(0), 100);
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        document.getElementById('nextSlide').addEventListener('click', nextSlide);
+        document.getElementById('prevSlide').addEventListener('click', prevSlide);
+        dots.forEach((dot, i) => {
+            dot.addEventListener('click', () => {
+                currentSlide = i;
+                showSlide(currentSlide);
+            });
+        });
+
+        setInterval(nextSlide, 5000);
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up, .fade-in-left, .scale-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Form Logic
+        const form = document.getElementById('booking-form');
+        const formContainer = document.getElementById('contact-form-container');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            // Simple validation
+            let hasErrors = false;
+            document.querySelectorAll('.error-msg').forEach(m => m.classList.add('hidden'));
+            
+            if (!name.trim()) {
+                document.getElementById('error-name').textContent = 'Imię jest wymagane';
+                document.getElementById('error-name').classList.remove('hidden');
+                hasErrors = true;
+            }
+            if (!email.trim()) {
+                document.getElementById('error-email').textContent = 'Email jest wymagany';
+                document.getElementById('error-email').classList.remove('hidden');
+                hasErrors = true;
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('error-email').textContent = 'Niepoprawny format email';
+                document.getElementById('error-email').classList.remove('hidden');
+                hasErrors = true;
+            }
+            if (!message.trim()) {
+                document.getElementById('error-message').textContent = 'Wiadomość jest wymagana';
+                document.getElementById('error-message').classList.remove('hidden');
+                hasErrors = true;
+            }
+
+            if (hasErrors) return;
+
+            formContainer.classList.add('status-sending');
+            
+            try {
+                const response = await fetch('https://formsubmit.co/ajax/szumfalgaski@gmail.com', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json' 
+                    },
+                    body: JSON.stringify({
+                        Imię: name,
+                        Email: email,
+                        Wiadomość: message,
+                        _subject: "Nowa wiadomość ze strony Szum Fal"
+                    }),
+                });
+                
+                if (response.ok) {
+                    formContainer.classList.remove('status-sending');
+                    formContainer.classList.add('status-active');
+                    form.reset();
+                } else {
+                    throw new Error('Błąd serwera');
+                }
+            } catch (error) {
+                formContainer.classList.remove('status-sending');
+                formContainer.classList.add('status-error');
+            }
+        });
+
+        document.getElementById('reset-form').addEventListener('click', () => {
+            formContainer.classList.remove('status-active');
+        });
+
+        document.getElementById('retry-form').addEventListener('click', () => {
+            formContainer.classList.remove('status-error');
+        });
+
+        // Privacy Modal Logic
+        const privacyModal = document.getElementById('privacy-modal');
+        const openPrivacy = document.getElementById('open-privacy');
+        const closePrivacyOverlay = document.getElementById('close-privacy-overlay');
+        const closePrivacyBtn = document.getElementById('close-privacy-btn');
+        const closePrivacyFooter = document.getElementById('close-privacy-footer');
+
+        function togglePrivacy(show) {
+            if (show) {
+                privacyModal.classList.remove('hidden');
+                privacyModal.classList.add('flex');
+                document.body.style.overflow = 'hidden'; // Prevent scroll
+            } else {
+                privacyModal.classList.add('hidden');
+                privacyModal.classList.remove('flex');
+                document.body.style.overflow = ''; // Restore scroll
+            }
+        }
+
+        openPrivacy.addEventListener('click', (e) => {
+            e.preventDefault();
+            togglePrivacy(true);
+        });
+
+        [closePrivacyOverlay, closePrivacyBtn, closePrivacyFooter].forEach(el => {
+            el.addEventListener('click', () => togglePrivacy(false));
+        });
+    </script>
+</body>
+</html>
