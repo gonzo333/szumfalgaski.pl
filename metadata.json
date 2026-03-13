@@ -1,0 +1,7 @@
+{
+  "name": "Szum Fal - Apartament Premium Gąski",
+  "description": "Luksusowy apartament nad morzem w Gąskach. Basen, siłownia, sauna i bliskość plaży.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
