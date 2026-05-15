@@ -759,12 +759,17 @@
             if (!iframe) return;
             try {
                 const isLocal = ['localhost', '127.0.0.1'].includes(location.hostname);
-                const proxyUrl = isLocal
-                    ? 'https://corsproxy.io/?' + encodeURIComponent(url)
-                    : 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
-                const res = await fetch(proxyUrl);
-                if (!res.ok) return;
-                const html = await res.text();
+                let html;
+                if (isLocal) {
+                    const res = await fetch('https://corsproxy.io/?' + encodeURIComponent(url));
+                    if (!res.ok) return;
+                    html = await res.text();
+                } else {
+                    const res = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(url));
+                    if (!res.ok) return;
+                    const data = await res.json();
+                    html = data.contents;
+                }
 
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, 'text/html');
