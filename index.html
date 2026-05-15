@@ -305,7 +305,7 @@
                 <h2 class="text-4xl md:text-5xl font-serif text-stone-900">Promocje</h2>
             </div>
             <div class="max-w-3xl mx-auto animate-on-scroll">
-                <iframe id="iframe-promocje" src="https://docs.google.com/document/d/e/2PACX-1vRHVfVTe5TFhutvkY9n63eQCQZ_XXQcgCLRBkKVu4UJ5Lox2fOYjjwrxRA5_Ef1iw/pub?embedded=true" width="100%" height="200" class="gdoc-frame" style="border:none; border-radius:1.25rem; box-shadow:0 4px 32px rgba(0,0,0,0.08);"></iframe>
+                <iframe id="iframe-promocje" src="https://docs.google.com/document/d/e/2PACX-1vRHVfVTe5TFhutvkY9n63eQCQZ_XXQcgCLRBkKVu4UJ5Lox2fOYjjwrxRA5_Ef1iw/pub?embedded=true" width="100%" height="235" class="gdoc-frame" style="border:none; border-radius:1.25rem; box-shadow:0 4px 32px rgba(0,0,0,0.08);"></iframe>
             </div>
         </div>
     </section>
@@ -736,19 +736,25 @@
         const GDOC_SOURCES = [
             {
                 iframeId: 'iframe-cennik',
-                url: 'https://docs.google.com/document/d/e/2PACX-1vQnWe1nIhL3qfidj5IXKvQ_m4ro0w_0fuYJw-NXHjKJs7UyJsbqRnla_huIoTT_Ig/pub'
+                url: 'https://docs.google.com/document/d/e/2PACX-1vQnWe1nIhL3qfidj5IXKvQ_m4ro0w_0fuYJw-NXHjKJs7UyJsbqRnla_huIoTT_Ig/pub',
+                multiplier: 1.2,
+                offset: 30
             },
             {
                 iframeId: 'iframe-promocje',
-                url: 'https://docs.google.com/document/d/e/2PACX-1vRHVfVTe5TFhutvkY9n63eQCQZ_XXQcgCLRBkKVu4UJ5Lox2fOYjjwrxRA5_Ef1iw/pub'
+                url: 'https://docs.google.com/document/d/e/2PACX-1vRHVfVTe5TFhutvkY9n63eQCQZ_XXQcgCLRBkKVu4UJ5Lox2fOYjjwrxRA5_Ef1iw/pub',
+                multiplier: 2.0,
+                minHeight: 235,
+                offset: 100
             },
             {
                 iframeId: 'iframe-regulamin',
-                url: 'https://docs.google.com/document/d/e/2PACX-1vTlRPngb_o0Tzz0EdYByn8I5k0oUQGl6yUVIZnSFTJkcadmsry4kNN2UbO0luXgzg/pub'
+                url: 'https://docs.google.com/document/d/e/2PACX-1vTlRPngb_o0Tzz0EdYByn8I5k0oUQGl6yUVIZnSFTJkcadmsry4kNN2UbO0luXgzg/pub',
+                multiplier: 1.0
             }
         ];
 
-        async function autoResizeIframe({ iframeId, url }) {
+        async function autoResizeIframe({ iframeId, url, multiplier = 1.2, minHeight = 200, offset = 0 }) {
             const iframe = document.getElementById(iframeId);
             if (!iframe) return;
             try {
@@ -783,7 +789,7 @@
                 const height = probe.scrollHeight;
                 document.body.removeChild(probe);
 
-                iframe.style.height = Math.max(200, Math.ceil(height * 1.2)) + 'px';
+                iframe.style.height = Math.max(minHeight, Math.ceil(height * multiplier) + offset) + 'px';
             } catch (e) {
                 // Zostaje domyślna wysokość
             }
