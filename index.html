@@ -752,7 +752,11 @@
             const iframe = document.getElementById(iframeId);
             if (!iframe) return;
             try {
-                const res = await fetch('https://corsproxy.io/?' + encodeURIComponent(url));
+                const isLocal = ['localhost', '127.0.0.1'].includes(location.hostname);
+                const proxyUrl = isLocal
+                    ? 'https://corsproxy.io/?' + encodeURIComponent(url)
+                    : 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
+                const res = await fetch(proxyUrl);
                 if (!res.ok) return;
                 const html = await res.text();
 
