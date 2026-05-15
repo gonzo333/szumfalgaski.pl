@@ -94,6 +94,7 @@
         .status-sending .form-status-sending { display: flex; }
         .status-error .form-status-error { display: block; }
         .status-active .form-content { display: none; }
+
     </style>
 </head>
 <body class="min-h-screen bg-stone-50 text-stone-900">
@@ -113,9 +114,12 @@
             <div class="hidden md:flex gap-8 text-sm font-medium uppercase tracking-widest text-stone-600">
                 <a href="#o-nas" class="hover:text-stone-900 transition-colors">O nas</a>
                 <a href="#udogodnienia" class="hover:text-stone-900 transition-colors">Udogodnienia</a>
+                <a href="#cennik" class="hover:text-stone-900 transition-colors">Cennik</a>
+                <a href="#promocje" class="hover:text-stone-900 transition-colors">Promocje</a>
                 <a href="#galeria" class="hover:text-stone-900 transition-colors">Galeria</a>
                 <a href="#mapa" class="hover:text-stone-900 transition-colors">Mapa</a>
                 <a href="#kontakt" class="hover:text-stone-900 transition-colors">Kontakt</a>
+                <a href="#regulamin" class="hover:text-stone-900 transition-colors">Regulamin</a>
             </div>
             <a href="#kontakt" class="bg-stone-900 text-white px-10 py-4 rounded-full text-lg font-bold hover:bg-stone-800 transition-all hover:scale-105 active:scale-95 shadow-lg">
                 Zarezerwuj
@@ -280,6 +284,32 @@
         </div>
     </section>
 
+    <!-- Pricing Section -->
+    <section id="cennik" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 animate-on-scroll">
+                <p class="text-xs uppercase tracking-[0.3em] text-stone-400 mb-4">Ceny</p>
+                <h2 class="text-4xl md:text-5xl font-serif text-stone-900">Cennik</h2>
+            </div>
+            <div class="max-w-3xl mx-auto animate-on-scroll">
+                <iframe id="iframe-cennik" src="https://docs.google.com/document/d/e/2PACX-1vQnWe1nIhL3qfidj5IXKvQ_m4ro0w_0fuYJw-NXHjKJs7UyJsbqRnla_huIoTT_Ig/pub?embedded=true" width="100%" height="200" scrolling="no" class="gdoc-frame" style="border:none; border-radius:1.25rem; box-shadow:0 4px 32px rgba(0,0,0,0.08); overflow:hidden;"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Promotions Section -->
+    <section id="promocje" class="py-24 bg-stone-100">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 animate-on-scroll">
+                <p class="text-xs uppercase tracking-[0.3em] text-stone-400 mb-4">Oferty specjalne</p>
+                <h2 class="text-4xl md:text-5xl font-serif text-stone-900">Promocje</h2>
+            </div>
+            <div class="max-w-3xl mx-auto animate-on-scroll">
+                <iframe id="iframe-promocje" src="https://docs.google.com/document/d/e/2PACX-1vRHVfVTe5TFhutvkY9n63eQCQZ_XXQcgCLRBkKVu4UJ5Lox2fOYjjwrxRA5_Ef1iw/pub?embedded=true" width="100%" height="200" scrolling="no" class="gdoc-frame" style="border:none; border-radius:1.25rem; box-shadow:0 4px 32px rgba(0,0,0,0.08); overflow:hidden;"></iframe>
+            </div>
+        </div>
+    </section>
+
     <!-- Gallery Section -->
     <section id="galeria" class="py-24 bg-white">
         <div class="container mx-auto px-6">
@@ -431,6 +461,19 @@
                         <button id="retry-form" class="mt-4 text-stone-900 font-bold hover:underline">Spróbuj ponownie</button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Regulamin Section -->
+    <section id="regulamin" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 animate-on-scroll">
+                <p class="text-xs uppercase tracking-[0.3em] text-stone-400 mb-4">Zasady pobytu</p>
+                <h2 class="text-4xl md:text-5xl font-serif text-stone-900">Regulamin</h2>
+            </div>
+            <div class="max-w-3xl mx-auto animate-on-scroll">
+                <iframe id="iframe-regulamin" src="https://docs.google.com/document/d/e/2PACX-1vTlRPngb_o0Tzz0EdYByn8I5k0oUQGl6yUVIZnSFTJkcadmsry4kNN2UbO0luXgzg/pub?embedded=true" width="100%" height="200" scrolling="no" class="gdoc-frame" style="border:none; border-radius:1.25rem; box-shadow:0 4px 32px rgba(0,0,0,0.08); overflow:hidden;"></iframe>
             </div>
         </div>
     </section>
@@ -687,6 +730,62 @@
         [closePrivacyOverlay, closePrivacyBtn, closePrivacyFooter].forEach(el => {
             el.addEventListener('click', () => togglePrivacy(false));
         });
+    </script>
+
+    <script>
+        const GDOC_SOURCES = [
+            {
+                iframeId: 'iframe-cennik',
+                url: 'https://docs.google.com/document/d/e/2PACX-1vQnWe1nIhL3qfidj5IXKvQ_m4ro0w_0fuYJw-NXHjKJs7UyJsbqRnla_huIoTT_Ig/pub'
+            },
+            {
+                iframeId: 'iframe-promocje',
+                url: 'https://docs.google.com/document/d/e/2PACX-1vRHVfVTe5TFhutvkY9n63eQCQZ_XXQcgCLRBkKVu4UJ5Lox2fOYjjwrxRA5_Ef1iw/pub'
+            },
+            {
+                iframeId: 'iframe-regulamin',
+                url: 'https://docs.google.com/document/d/e/2PACX-1vTlRPngb_o0Tzz0EdYByn8I5k0oUQGl6yUVIZnSFTJkcadmsry4kNN2UbO0luXgzg/pub'
+            }
+        ];
+
+        async function autoResizeIframe({ iframeId, url }) {
+            const iframe = document.getElementById(iframeId);
+            if (!iframe) return;
+            try {
+                const res = await fetch('https://corsproxy.io/?' + encodeURIComponent(url));
+                if (!res.ok) return;
+                const html = await res.text();
+
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+
+                // Pobierz style z dokumentu Google
+                let styleText = '';
+                doc.querySelectorAll('head style').forEach(s => { styleText += s.textContent; });
+
+                const contents = doc.querySelector('#contents') || doc.body;
+                contents.querySelectorAll('script, link').forEach(n => n.remove());
+
+                // Google Docs dodaje ~200px marginesów strony – zmniejszamy szerokość probe
+                const probeWidth = Math.max(300, iframe.offsetWidth - 200);
+
+                const probe = document.createElement('div');
+                probe.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none;width:' + probeWidth + 'px;left:-9999px;top:0;overflow:visible';
+                probe.innerHTML = (styleText ? `<style>${styleText}</style>` : '') + contents.innerHTML;
+                document.body.appendChild(probe);
+
+                // Poczekaj na renderowanie czcionek
+                await new Promise(r => setTimeout(r, 500));
+                const height = probe.scrollHeight;
+                document.body.removeChild(probe);
+
+                iframe.style.height = Math.max(200, Math.ceil(height * 1.2)) + 'px';
+            } catch (e) {
+                // Zostaje domyślna wysokość
+            }
+        }
+
+        GDOC_SOURCES.forEach(autoResizeIframe);
     </script>
 </body>
 </html>
